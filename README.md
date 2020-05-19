@@ -4,11 +4,11 @@ DLG Data Engineer Test
 Assumptions:
 Day temperature: I have used the average temperature between 8am to 4pm to calculate the day temperature since it is a winter month.
 Hottest day: The day with the highest average day temperature is considered as the hottest day.
-raw group: I assume you meant row group in parquet. I have set the row group value to 30 which is approximately the number of days in the month.
+raw group: I assume you meant row group in parquet. I have split the row groups are split by the days of the month.
 
 Transformation and data cleansing:
 1.	If the ScreenTemperature is -99 reset it to Nan as I believe that the temperature was not captured for that period
-2.	If there is a missing temperature between 2 times period, I have populated it by getting the average of previous temperature and next temperature.
+2.	If there is a missing temperature between 2 time period, I have populated it by getting the average of previous temperature and next temperature.
 Eg: 8:00am is 10 degree, 9:00am is Nan, 11:00am is 12degree
 I have transformed it t0 8:00am is 10 degree, 9:00am is 11degree, 11:00am is 12degree
 3.	When most of the temperature values are missing in a group then the average is the sum of values present divided by 9.
