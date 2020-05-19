@@ -23,7 +23,6 @@ def create_fact_dimension_tables(dt):
     fact_df, agg_df = perform_transformations(pd_weather_fact)
     save_fact(fact_df, dt)
     save_aggregate(agg_df, dt)
-    save_fact(pd_weather_fact, dt)
 
 
 def get_geo_location(data):
@@ -166,9 +165,13 @@ def add_fk(df):
 
 
 def save_fact(df, dt):
+    unique_dates = df['ObservationDate'].unique().tolist()
+    print(unique_dates)
     table = pa.Table.from_pandas(df, preserve_index=False)
     with pq.ParquetWriter(f"output_data/weather_fact/dt={dt}/weather_fact.parquet", table.schema) as writer:
-        for i in range(30):
+        for date in unique_dates:
+            df1 = df[df['ObservationDate'] == date]
+            table = pa.Table.from_pandas(df1, preserve_index=False)
             writer.write_table(table)
 
 
